@@ -1,9 +1,10 @@
 package main
 
 import (
+    "log"
     "net/http"
     "github.com/gin-gonic/gin"
-    "github.com/omniscale/go-mapnik"
+    "go-mapnik"
 )
 
 // album represents data about a record album.
@@ -21,19 +22,27 @@ var albums = []album{
     {ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
 }
 
-// getAlbums responds with the list of all albums as JSON.
-func getAlbums(c *gin.Context) {
-    c.IndentedJSON(http.StatusOK, albums)
-}
-
 func makemap() {
     m := mapnik.New()
+    if err := m.Load("./src/data/map.xml"); err != nil {
+	log.Fatal(err)
+    }
     m.Resize(1000, 500)
+    m.ZoomTo(-180, -90, 180, 90)
+    opts := mapnik.RenderOpts{Format: "png32"}
+    if err := m.RenderToFile(opts, "./src/example-1.png"); err != nil {
+	log.Fatal(err)
+    }
+}
+
+// getAlbums responds with the list of all albums as JSON.
+func getAlbums(c *gin.Context) {
+    makemap()
+    c.IndentedJSON(http.StatusOK, albums)
 }
 
 func main() {
     router := gin.Default()
     router.GET("/albums", getAlbums)
-
     router.Run("0.0.0.0:8080")
 }

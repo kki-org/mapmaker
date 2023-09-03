@@ -14,4 +14,3 @@ services:
     tty: true
     env_file:
       - .env
-    command: go run main.go

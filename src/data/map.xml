@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Map maximum-extent="-180,-90,180,90" background-color="steelblue">
+
+    <Style name="styleA">
+        <Rule>
+            <PolygonSymbolizer fill="rgba(255, 0, 0, 0.5)" />
+        </Rule>
+    </Style>
+
+    <Layer name="layerA">
+        <StyleName>styleA</StyleName>
+        <Datasource>
+	    <Parameter name="file">/usr/src/data/gis_osm_buildings_a_free_1.shp</Parameter>
+            <Parameter name="type">shape</Parameter>
+        </Datasource>
+    </Layer>
+</Map>
+
